@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Orar USARB</title>
+        <meta name="csrf-token" content="tLp7T84f-pUp9N1G72h-Fg5LFXzh0yIzZyvQ"/>
+        <link rel="stylesheet" href="style.css">
+        <link rel="shortcut icon" href="/img/logo 2.png" type="image/x-icon"
+        <link rel="stylesheet" href="/css/app.css?2022-05-12"/>
+        
+    </head>
+    <body class="uk-container">
+        <div class="uk-margin-top" uk-grid="uk-grid" id="app">
+            < class="uk-width-2-5@xl uk-width-2-5@l uk-width-2-5@m uk-width-2-5@s uk-width-1-1">
+                <div uk-alert="uk-alert"><h4 class="text-white uk-text-center">Orarul Cursurilor<</h4></div>
+                <div class="uk-flex uk-flex-between uk-flex-nowrap">
+                    <button class="uk-button active myToggler" id="studentMode" @click="changeMode">Grupe</button>
+                    <button class="uk-button changer2 myToggler" id="teacherMode" @click="changeMode">Profesori</button>
+                    <button class="uk-button changer myToggler" id="officeMode" @click="changeMode">Aule</button>
+                </div>
+                <div class="uk-flex uk-flex-between uk-flex-wrap">
+                    <div class="uk-search uk-search-default uk-margin-top uk-background-default" id="searchZone">
+                        <span uk-search-icon="uk-search-icon"></span>
+                        <input class="uk-search-input uk-width-1-1" type="search" id="searchInput" v-model="groupSearch" v-on:keyup.down="moveBetween"/>
+                        <a class="uk-form-icon uk-form-icon-flip uk-icon uk-text-danger" uk-icon="icon: close" @click="clearSearch" v-show="groupSearch.length" href="#"></a>
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-background-default uk-margin-top uk-overflow-auto" id="resultZone">
+                    <ul class="uk-list uk-list-divider">
+                        <li class="uk-padding-remove-vertical uk-margin-remove-top uk-padding-small groupName" v-for="(item, index) in getGroups" @click="showLessons" v-bind:tabindex="index" v-bind:id="item.Id" @keydown="moveBetween" v-on:keyup.enter="showLessons">{{item.Denumire}}</li>
+                    </ul>
+                </div>
+                <select class="uk-select uk-margin-top" id="daySelector" @change="showLessonsD">
+                    <option value="-1">Ziua</option>
+                    <option value="0" @change="showLessonsD">Luni</option>
+                    <option value="1" @change="showLessonsD">Marți</option>
+                    <option value="2" selected="selected">Miercuri</option>
+                    <option value="3" @change="showLessonsD">Joi</option>
+                    <option value="4" @change="showLessonsD">Vineri</option>
+                    <option value="5" @change="showLessonsD">Sîmbătă</option>
+                    <option value="6" @change="showLessonsD">Duminică</option>
+                </select>
+                <select class="uk-select uk-margin-top" id="weekSelector" @change="showLessonsD">
+                    <option value="-1">Săptămîna</option>
+                    <option class="initial" value="1">1 (29.8.2022 - 4.9.2022)</option>
+                    <option class="initial" value="2">2 (5.9.2022 - 11.9.2022)</option>
+                    <option class="initial" value="3">3 (12.9.2022 - 18.9.2022)</option>
+                    <option class="initial" value="4">4 (19.9.2022 - 25.9.2022)</option>
+                    <option class="initial" value="5">5 (26.9.2022 - 2.10.2022)</option>
+                    <option class="initial" value="6">6 (3.10.2022 - 9.10.2022)</option>
+                    <option class="initial" value="7">7 (10.10.2022 - 16.10.2022)</option>
+                    <option class="initial" value="8">8 (17.10.2022 - 23.10.2022)</option>
+                    <option class="initial" value="9">9 (24.10.2022 - 30.10.2022)</option>
+                    <option class="initial" value="10">10 (31.10.2022 - 6.11.2022)</option>
+                    <option class="initial" selected="selected" value="11">11 (7.11.2022 - 13.11.2022)</option>
+                    <option class="initial" value="12">12 (14.11.2022 - 20.11.2022)</option>
+                    <option class="initial" value="13">13 (21.11.2022 - 27.11.2022)</option>
+                    <option class="initial" value="14">14 (28.11.2022 - 4.12.2022)</option>
+                    <option class="initial" value="15">15 (5.12.2022 - 11.12.2022)</option>
+                    <option class="initial" value="16">16 (12.12.2022 - 18.12.2022)</option>
+                    <option class="initial" value="17">17 (19.12.2022 - 25.12.2022)</option>
+                    <option class="initial" value="18">18 (26.12.2022 - 1.1.2023)</option>
+                    <option class="initial" value="19">19 (2.1.2023 - 8.1.2023)</option>
+                    <option class="initial" value="20">20 (9.1.2023 - 15.1.2023)</option>
+                    <option class="initial" value="21">21 (16.1.2023 - 22.1.2023)</option>
+                </select>
+                <select class="uk-select uk-margin-top" id="weekSelector2" @change="showLessonsD">
+                    <option value="-1">Săptămîna</option>
+                    <option v-for="(week, index) in weeks" v-bind:value="(index +1)">{{week}}</option>
+                </select>
+                
+                <select class="uk-select uk-margin-top" id="semesterSelector" @change="setSemester">
+                    <option value="-1">Semestru</option>
+                    <option selected="selected" value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+                <table class="uk-table" id="shorTable">
+                    <thead>
+                        <tr>
+                            <th class="uk-background-green  uk-text-center shortDay  uk-padding-remove white-border"></th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">1</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">2</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">3</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">4</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">5</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">6</th>
+                            <th class="uk-background-green uk-width-1-8 uk-text-center   uk-padding-remove white-border">7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay  uk-padding-remove" @click="showLessonsD" data-id="weekTrigger">L</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white  uk-padding-remove"></td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay  uk-padding-remove " @click="showLessonsD" data-id="weekTrigger">Ma</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay  uk-padding-remove " @click="showLessonsD" data-id="weekTrigger">Mi</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay uk-padding-remove" @click="showLessonsD" data-id="weekTrigger">J</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay uk-padding-remove" @click="showLessonsD" data-id="weekTrigger">V</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay uk-padding-remove " @click="showLessonsD" data-id="weekTrigger">S</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                        <tr>
+                            <td class="uk-background-green  uk-text-center shortDay  uk-padding-remove " @click="showLessonsD" data-id="weekTrigger">D</td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"> </td>
+                            <td class="uk-width-1-8 uk-text-center uk-background-white uk-padding-remove"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <b class="uk-flex uk-flex-center uk-flex-wrap" id="tableLegend">
+            </b><p class="text-white">P - Prelegere</p>
+                    <p class="text-white">S - Seminar</p>
+                    <p class="text-white">L - Laborator</p>
+                    <p class="text-white">PC - Proiect de Curs</p>
+                    <p class="text-white">EP - Evaluare periodică</p>
+                    <p class="text-white">C - Consultație</p>
+                    <p class="text-white">E - Examinare</p>
+                    <p class="text-white">R - Reexaminare</p></b>
+                </div>
+                <span class="uk-label uk-background-green">
+                    <a class="uk-link-reset" href="download" uk-icon="file-pdf" @click="Download" id="download">Descarcă orar</a>
+                </span>
+                <a class="uk-link-muted  uk-margin-left" href="http://student.usarb.md">
+                    <img src="img/student3.png" style="height:30px !important"/>Student </a>
+                    <span class="uk-label uk-background-red  uk-margin-left">
+                        <a class="uk-link-reset" href="printExams" uk-icon="print" @click="printExams" id="printExams">Examene</a>
+                    </span>
+                    <div class="uk-alert-success" uk-alert="uk-alert">Orarul nu lucrează între 23:00 și 5:00</div>
+                </section>
+                <section class="uk-width-3-5@xl uk-width-3-5@l uk-width-3-5@m uk-width-3-5@s uk-width-1-1" id="section2">
+                            <img class="uk-align-center uk-margin-small-bottom" src="img/logo_usarb_new.png" alt="Logo universitatii" width="130px" height="191px" id="headerLogo"/>
+                            <h4 class="uk-text-center text-white uk-margin-remove-top uk-margin-remove-bottom" id="headerText">UNIVERSITATEA DE STAT „ALECU RUSSO” DIN BĂLȚI</h4>
+                            <table class="uk-table uk-margin-remove-top" id="tableForLesssons">
+                                <tbody>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">8:00<br/>9:30</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[1].title) === 'object'">
+                                                <div class="uk-flex uk-flex-wrap uk-flex-wrap-around" v-if="lessons[1].type.four">
+                                                    <div class="uk-width-1-4"><strong> {{lessons[1].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.one}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[1].professor.one}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[1].office.one}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[1].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.two}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[1].professor.two}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[1].office.two}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[1].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.three}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[1].professor.three}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[1].office.three}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[1].title.four}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.four}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[1].professor.four}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[1].office.four}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else-if="lessons[1].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[1].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[1].professor.one}}</p>
+                                                        <strong>  {{lessons[1].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[1].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[1].professor.two}}</p>
+                                                        <strong>  {{lessons[1].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[1].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[1].professor.three}}</p>
+                                                        <strong>  {{lessons[1].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[1].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[1].professor.one}}</p>
+                                                        <strong>  {{lessons[1].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[1].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[1].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[1].professor.two}}</p>
+                                                        <strong>  {{lessons[1].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[1].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[1].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[1].professor}}</p>
+                                                <strong>  {{lessons[1].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">9:45<br/>11:15</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[2].title) === 'object'">
+                                                <div class="uk-flex uk-flex-wrap uk-flex-wrap-around" v-if="lessons[2].type.four">
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[2].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.one}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[2].professor.one}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[2].office.one}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[2].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.two}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[2].professor.two}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[2].office.two}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[2].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.three}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[2].professor.three}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[2].office.three}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[2].title.four}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.four}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[2].professor.four}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[2].office.four}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else-if="lessons[2].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[2].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[2].professor.one}}</p>
+                                                        <strong>  {{lessons[2].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[2].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[2].professor.two}}</p>
+                                                        <strong>  {{lessons[2].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[2].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[2].professor.three}}</p>
+                                                        <strong>  {{lessons[2].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[2].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[2].professor.one}}</p>
+                                                        <strong>  {{lessons[2].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[2].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[2].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[2].professor.two}}</p>
+                                                        <strong>  {{lessons[2].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[2].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[2].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[2].professor}}</p>
+                                                <strong>  {{lessons[2].office}}</strong>
+                                            </div>
+                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">11:30<br/>13:00</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[3].title) === 'object'">
+                                                <div class="uk-flex uk-flex-wrap uk-flex-wrap-around" v-if="lessons[3].type.four">
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[3].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.one}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[3].professor.one}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[3].office.one}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[3].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.two}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[3].professor.two}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[3].office.two}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[3].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.three}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[3].professor.three}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[3].office.three}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[3].title.four}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.four}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[3].professor.four}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[3].office.four}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else-if="lessons[3].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[3].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[3].professor.one}}</p>
+                                                        <strong>  {{lessons[3].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[3].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[3].professor.two}}</p>
+                                                        <strong>  {{lessons[3].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[3].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[3].professor.three}}</p>
+                                                        <strong>  {{lessons[3].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[3].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[3].professor.one}}</p>
+                                                        <strong>  {{lessons[3].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[3].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[3].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[3].professor.two}}</p>
+                                                        <strong>  {{lessons[3].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[3].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[3].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[3].professor}}</p>
+                                                <strong>  {{lessons[3].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">13:15<br/>14:45</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[4].title) === 'object'">
+                                                <div class="uk-flex uk-flex-wrap uk-flex-wrap-around" v-if="lessons[4].type.four">
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[4].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.one}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[4].professor.one}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[4].office.one}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[4].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.two}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[4].professor.two}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[4].office.two}}</p>
+                                                    </div><div class="uk-width-1-4">
+                                                        <strong> {{lessons[4].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.three}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[4].professor.three}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[4].office.three}}</p>
+                                                    </div
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[4].title.four}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.four}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[4].professor.four}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[4].office.four}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else-if="lessons[4].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[4].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[4].professor.one}}</p>
+                                                        <strong>  {{lessons[4].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[4].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[4].professor.two}}</p>
+                                                        <strong>  {{lessons[4].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[4].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[4].professor.three}}</p>
+                                                        <strong>  {{lessons[4].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[4].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[4].professor.one}}</p>
+                                                        <strong>  {{lessons[4].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[4].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[4].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[4].professor.two}}</p>
+                                                        <strong>  {{lessons[4].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[4].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[4].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[4].professor}}</p>
+                                                <strong>  {{lessons[4].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">15:00<br/>16:30</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[5].title) === 'object'">
+                                                <div class="uk-flex uk-flex-wrap uk-flex-wrap-around" v-if="lessons[5].type.four">
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[5].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.one}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[5].professor.one}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[5].office.one}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[5].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.two}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[5].professor.two}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[5].office.two}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[5].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.three}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[5].professor.three}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[5].office.three}}</p>
+                                                    </div>
+                                                    <div class="uk-width-1-4">
+                                                        <strong> {{lessons[5].title.four}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.four}}</p>
+                                                        <p class="uk-margin-remove uk-text-break">  {{lessons[5].professor.four}}</p>
+                                                        <p class="uk-text-truncate uk-text-light">  {{lessons[5].office.four}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else-if="lessons[5].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[5].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[5].professor.one}}</p>
+                                                        <strong>  {{lessons[5].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[5].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[5].professor.two}}</p>
+                                                        <strong>  {{lessons[5].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[5].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[5].professor.three}}</p>
+                                                        <strong>  {{lessons[5].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[5].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[5].professor.one}}</p>
+                                                        <strong>  {{lessons[5].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[5].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[5].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[5].professor.two}}</p>
+                                                        <strong>  {{lessons[5].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[5].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[5].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[5].professor}}</p>
+                                                <strong>  {{lessons[5].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">16:45<br/>18:15</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[6].title) === 'object'">
+                                                <div class="uk-flex" v-if="lessons[6].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[6].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[6].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[6].professor.one}}</p>
+                                                        <strong>  {{lessons[6].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[6].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[6].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[6].professor.two}}</p>
+                                                        <strong>  {{lessons[6].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[6].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[6].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[6].professor.three}}</p>
+                                                        <strong>  {{lessons[6].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[6].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[6].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[6].professor.one}}</p>
+                                                        <strong>  {{lessons[6].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[6].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[6].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[6].professor.two}}</p>
+                                                        <strong>  {{lessons[6].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[6].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[6].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[6].professor}}</p>
+                                                <strong>  {{lessons[6].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="uk-background-green uk-width-1-5 col-space uk-text-center">18:30<br/>20:00</td>
+                                        <td class="lessonsHide uk-background-white uk-width-4-5 uk-text-center uk-padding-remove">
+                                            <div v-if="typeof(lessons[7].title) === 'object'">
+                                                <div class="uk-flex" v-if="lessons[7].type.three">
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[7].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[7].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[7].professor.one}}</p>
+                                                        <strong>  {{lessons[7].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[7].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[7].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[7].professor.two}}</p>
+                                                        <strong>  {{lessons[7].office.two}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-3">
+                                                        <strong> {{lessons[7].title.three}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[7].type.three}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[7].professor.three}}</p>
+                                                        <strong>  {{lessons[7].office.three}}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-flex" v-else="v-else">
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[7].title.one}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[7].type.one}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[7].professor.one}}</p>
+                                                        <strong>  {{lessons[7].office.one}}</strong>
+                                                    </div>
+                                                    <div class="uk-width-1-2">
+                                                        <strong> {{lessons[7].title.two}}</strong>
+                                                        <p class="uk-margin-remove">  {{lessons[7].type.two}}</p>
+                                                        <p class="uk-margin-remove">  {{lessons[7].professor.two}}</p>
+                                                        <strong>  {{lessons[7].office.two}}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="simple" v-else="v-else">
+                                                <strong> {{lessons[7].title}}</strong>
+                                                <p class="uk-margin-remove">  {{lessons[7].type}}</p>
+                                                <p class="uk-margin-remove">  {{lessons[7].professor}}</p>
+                                                <strong>  {{lessons[7].office}}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </body>
+                </html>

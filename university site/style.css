@@ -1,0 +1,251 @@
+html {
+    background-image: url("img/new_background_1.png.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Times New Roman', Times, serif;
+    min-height: 100vh;
+}
+
+/*
+https://css-tricks.com/almanac/properties/b/box-shadow/
+http://shpargalkablog.ru/2011/06/css-box-shadow.html
+https://www.cssmatic.com/box-shadow
+*/
+body {
+    min-height: 100vh;
+}
+
+.text-white {
+    color: white;
+    font-weight: 900;
+}
+
+.uk-button {
+    /* border: 1px solid #50DC95; */
+    /* opacity: 0.8; */
+    background-color: #25975A;
+    /* #63DD9F; */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: none;
+}
+
+.uk-search-icon {
+    color: #25975A !important;
+}
+
+.uk-button:hover {
+    /* opacity: 1; */
+    background-color: white;
+    color: black;
+}
+
+.uk-button.active {
+    /* opacity: 1; */
+    background-color: white;
+    color: black;
+}
+
+#searchZone {
+    min-width: 150px;
+    width: 100%;
+    /* width: 300px; */
+}
+
+#searchZone,
+#semesterSelector,
+#daySelector,
+#weekSelector2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#resultZone {
+    height: 100px;
+    max-height: 100px;
+    font-size: 16px;
+}
+
+#resultZone ul {
+    display: none;
+}
+
+.uk-background-gray {
+    background-color: #b5b0b0;
+}
+
+.uk-background-white {
+    background-color: white;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+table,
+td,
+th {
+    border: 1px solid gray;
+}
+
+tbody tr:hover {
+    cursor: pointer;
+
+}
+
+tbody tr:hover td {
+    background-color: #fbfbc0;
+    color: black;
+    width: 329px;
+}
+
+#tableForLesssons {
+    /* -webkit-box-shadow: 3px 0px 4px 5px rgba(94, 86, 94, 1);
+    -moz-box-shadow: 3px 0px 4px 5px rgba(94, 86, 94, 1);
+    box-shadow: 3px 0px 4px 5px rgba(94, 86, 94, 1); */
+    -webkit-box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+    -moz-box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+    box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+}
+
+.col-space {
+    height: 60px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    vertical-align: middle !important;
+}
+
+th.uk-background-green {
+    color: white !important;
+}
+
+.uk-background-green {
+    border: 1px solid white;
+    /*gray;    #50DC95*/
+    /* opacity: 0.8; */
+    background-color: #25975A;
+    color: white;
+}
+
+.uk-background-red {
+    background-color: #f0506e;
+}
+
+#shorTable td[class*=uk-width],
+#shorTable th[class*=uk-width] {
+    box-sizing: border-box;
+    width: 50px !important;
+    max-width: 100%;
+}
+
+#shorTable {
+    -webkit-box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+    -moz-box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+    box-shadow: 3px 0px 9px 5px rgba(26, 25, 26, 1);
+}
+
+#tableLegend p {
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#tableLegend p {
+    margin-top: 0px;
+    margin-left: 10px;
+    /* background-color: chocolate; */
+}
+
+@media screen and (max-width: 1086px) {
+
+    .changer,
+    .changer2,
+    #studentMode {
+        margin-top: 15px;
+    }
+}
+
+@media screen and (max-width: 726px) {
+    .changer2 {
+        margin-top: 15px;
+    }
+
+    #studentMode {
+        margin-top: 15px;
+        height: 38px;
+    }
+}
+
+.groupName:hover {
+    cursor: pointer;
+    color: #5abb89;
+    background-color: #fbfbc0;
+    font-weight: bold;
+    /*antiquewhite;*/
+}
+
+#weekSelector2 {
+    display: none;
+}
+
+.selectedGroup {
+    background-color: #25975A;
+    color: white;
+}
+
+.lessonsHide>div {
+    display: none;
+}
+
+.timetableWeek {
+    color: white !important;
+}
+
+.timetableWeek:hover {
+    outline: 1px solid white;
+}
+
+.uk-text-black {
+    color: black !important;
+}
+
+.clear:hover {
+    cursor: pointer;
+}
+
+.shortDay {
+    width: 120px !important;
+}
+
+/* Mozila Firefox */
+@-moz-document url-prefix() {
+    #shorTable thead tr {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #shorTable tbody tr {
+        display: flex;
+        flex-direction: row;
+        width: 329PX;
+    }
+
+    .shortDay {
+        /* flex-grow: 2; */
+        max-width: 100%;
+        width: 100% !important;
+    }
+
+    #shorTable td[class*=uk-width],
+    #shorTable th[class*=uk-width] {
+        box-sizing: border-box;
+        width: 90% !important;
+        max-width: 90%;
+    }
+}
+*{
+    outline:0;
+}
+
