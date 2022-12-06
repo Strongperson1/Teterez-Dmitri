@@ -1,0 +1,344 @@
+/** {
+    font-family: 'Zen Antique Soft', serif;
+}*/
+
+body {
+    background: url(https://phonoteka.org/uploads/posts/2021-04/1619159561_9-phonoteka_org-p-les-dlya-fotoshopa-na-zadnii-fon-11.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#orar header h4 {
+    font-size: 20px;
+    height: 48px;
+    width: 450px;
+    color: #666666;
+    background-color: white;
+    text-align: center;
+    padding-top: 20px;
+    position: absolute;
+    left: 80px;
+    top: 40px;
+}
+
+#grup {
+    height: 35px;
+    width: 102px;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+#prof {
+    height: 35px;
+    width: 120px;
+    background-color: #25975A;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+#aul {
+    height: 35px;
+    width: 90px;
+    background-color: #25975A;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.nav {
+    display: grid;
+    grid-template-columns: 102px 120px 90px;
+    gap: 50px;
+    text-align: center;
+    position: absolute;
+    top: 150px;
+    left: 90px;
+}
+
+#search {
+    position: absolute;
+    left: 40px;
+    top: 220px;
+}
+
+#find {
+    width: 46px;
+    height: 46px;
+    background-color: white;
+}
+
+#find-main {
+    width: 400px;
+    height: 40px;
+}
+
+.input {
+    display: grid;
+    grid-template-columns: 40px 400px;
+}
+
+#week {
+    position: absolute;
+    left: 100px;
+    top: 440px;
+}
+
+#zi {
+    position: absolute;
+    left: 350px;
+    top: 425px;
+}
+
+.list {
+    height: 100px;
+    max-height: 100px;
+    width: 430px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    overflow-y: scroll;
+    position: absolute;
+    left: 90px;
+    top: 300px;
+}
+
+.list li {
+    list-style: none;
+    border-bottom: 1px solid #b5b0b0;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: 109px 45px 45px 45px 45px 45px 45px 45px;
+    grid-template-rows: repeat(8, 25px);
+    position: absolute;
+    left: 80px;
+    top: 500px;
+}
+
+.day {
+    width: 107px;
+    height: 23px;
+    background-color: lightseagreen;
+    color: white;
+    border: 1px solid white;
+    margin: opx;
+}
+
+.lesson {
+    width: 43px;
+    height: 23px;
+    background-color: lightseagreen;
+    color: white;
+    border: 1px solid white;
+    margin: opx;
+}
+
+.tablelesson {
+    width: 43px;
+    height: 23px;
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.calendar p {
+    text-align: center;
+    padding-top: 3px;
+}
+
+.am {
+    background-color: red;
+    color: white;
+}
+
+.tn {
+    background-color: limegreen;
+    color: white;
+}
+
+.fl {
+    background-color: blue;
+    color: white;
+}
+
+.ppw {
+    background-color: darkolivegreen;
+    color: white;
+}
+
+.ef {
+    background-color: black;
+    color: white;
+}
+
+.tr {
+    background-color: limegreen;
+    color: white;
+}
+
+.ppw1 {
+    background-color: grey;
+    color: white;
+}
+
+.ped {
+    background-color: lightgray;
+    color: white;
+}
+
+.am1 {
+    background-color: limegreen;
+    color: white;
+}
+
+.am1 {
+    background-color: limegreen;
+    color: white;
+}
+
+.tn1 {
+    background-color: brown;
+    color: white;
+}
+
+.ped1 {
+    background-color: silver;
+    color: white;
+}
+
+.history {
+    font-size: 12px;
+    color: gold;
+}
+
+.history p {
+    width: 150px;
+}
+
+.his1 {
+    position: absolute;
+    top: 760px;
+    left: 70px;
+}
+
+.his2 {
+    position: absolute;
+    top: 790px;
+    left: 50px;
+}
+
+.p1 {
+    position: absolute;
+    left: 40px;
+}
+
+.p2 {
+    position: absolute;
+    left: 130px;
+}
+
+.p3 {
+    position: absolute;
+    left: 200px;
+}
+
+.p4 {
+    position: absolute;
+    left: 280px;
+}
+
+.p11 {
+    position: absolute;
+    left: 40px;
+}
+
+.p22 {
+    position: absolute;
+    left: 180px;
+}
+
+.p33 {
+    position: absolute;
+    left: 270px;
+}
+
+.p44 {
+    position: absolute;
+    left: 350px;
+}
+
+h1 {
+    color: white;
+}
+
+.tabel {
+    color: white;
+    align-items: center;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 102px 2000px;
+    grid-template-rows: repeat(7, 95px);
+    position: absolute;
+    left: 700px;
+    top: 250px;
+    font-size: 14px;
+}
+
+.tabelright {
+    display: grid;
+    grid-template-columns: repeat(5, 200px);
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    color: black;
+    height: 95px;
+    border-top: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+}
+
+.tabelright div {
+    width: 250px;
+    align-items: center;
+}
+
+.tabelright div p {
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+}
+
+.tabelleft {
+    border: 1px solid white;
+    background-color: #25975A;
+    color: white;
+    height: 93px;
+    line-height: 40px;
+}
+
+#orar-second img {
+    position: absolute;
+    top: 20px;
+    left: 900px;
+}
+
+#orar-second h1 {
+    position: absolute;
+    top: 160px;
+    left: 680px;
+}*/
+
+nav {
+    position: absolute;
+    left: 80px;
+    top: 800px;
+}
+
+a {
+    text-decoration: none;
+    color: red;
+}
