@@ -285,14 +285,14 @@ h1 {
     grid-template-columns: 102px 2000px;
     grid-template-rows: repeat(7, 95px);
     position: absolute;
-    left: 700px;
+    left: 550px;
     top: 250px;
     font-size: 14px;
 }
 
 .tabelright {
     display: grid;
-    grid-template-columns: repeat(5, 200px);
+    grid-template-columns: repeat(5, 180px);
     align-items: center;
     text-align: center;
     background-color: white;
@@ -303,7 +303,7 @@ h1 {
 }
 
 .tabelright div {
-    width: 250px;
+    width: 180px;
     align-items: center;
 }
 
@@ -330,9 +330,9 @@ h1 {
     position: absolute;
     top: 160px;
     left: 680px;
-}*/
+}
 
-nav {
+*/ nav {
     position: absolute;
     left: 80px;
     top: 800px;
