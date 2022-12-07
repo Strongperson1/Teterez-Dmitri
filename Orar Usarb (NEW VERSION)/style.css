@@ -115,7 +115,7 @@ body {
 
 .calendar {
     display: grid;
-    grid-template-columns: 109px 45px 45px 45px 45px 45px 45px 45px;
+    grid-template-columns: 109px 45px 45px 45px 45px 45px 45px 45px 45px;
     grid-template-rows: repeat(8, 25px);
     position: absolute;
     left: 80px;
@@ -283,10 +283,10 @@ h1 {
     text-align: center;
     display: grid;
     grid-template-columns: 102px 2000px;
-    grid-template-rows: repeat(7, 95px);
+    grid-template-rows: repeat(8, 95px);
     position: absolute;
-    left: 550px;
-    top: 250px;
+    left: 560px;
+    top: 220px;
     font-size: 14px;
 }
 
@@ -328,7 +328,6 @@ h1 {
 
 #orar-second h1 {
     position: absolute;
-    top: 160px;
     left: 680px;
 }
 
